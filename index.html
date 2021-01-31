@@ -3,14 +3,57 @@
 <head>
   <title>Rock, Paper, Scissors</title>
   <meta charset="UTF-8"/>
+  <link  rel="stylesheet" type="text/css" href="main.css">
 </head>
 <body>
+  <div id="heading">
+    <h1>Rock, Paper, Scissors</h1>
+  </div>
+  <div id="btn-container">
+    <button id="rock" class="buttons">Rock</button>
+    <button id="paper" class="buttons">Paper</button>
+    <button id="scissors" class="buttons">Scissors</button>
+  </div>
+  <div id="results-container">
+    <div id="results"></div>
+    <div id="running-score"></div>
+  </div>
   <script>
-    // Initialising variables
+    // Variables
     let playerSelection = '';
-    let computerSelection = computerPlay();
+    let computerSelection;
     let playerScore = 0;
     let computerScore = 0;
+    const resultsDiv = document.querySelector('#results');
+    const runningScore = document.querySelector('#running-score');
+    const resultsContainer = document.querySelector('#results-container');
+    const resultsText = document.createElement('p');
+    const compScore = document.createElement('p');
+    const playScore = document.createElement('p');
+
+    playScore.textContent = (`Player Score: ${playerScore}`);
+    compScore.textContent = (`Computer Score: ${computerScore}`);
+    runningScore.appendChild(playScore);
+    runningScore.appendChild(compScore);
+    resultsText.textContent = '...';
+    resultsDiv.appendChild(resultsText);
+
+    // Event listeners
+    const rock = document.querySelector('#rock');
+    rock.addEventListener('click', () => {
+      console.log(playRound('ROCK', computerPlay()));
+    });
+
+    const paper = document.querySelector('#paper');
+    paper.addEventListener('click', () => {
+      console.log(playRound('PAPER', computerPlay()));
+    });
+
+    const scissors = document.querySelector('#scissors');
+    scissors.addEventListener('click', () => {
+      console.log(playRound('SCISSORS', computerPlay()));
+    });
+
 
     function computerPlay() { // Generate computer choice
       let choices = ['ROCK', 'PAPER', 'SCISSORS']; // Array of choices
@@ -19,53 +62,44 @@
     }
 
     function playRound(playerSelection, computerSelection) { // Play a round
-      computerSelection = computerPlay();
-      if (playerSelection === 'ROCK' || playerSelection === 'PAPER' || playerSelection === 'SCISSORS') { // Check for win
-        if (playerSelection === computerSelection) {
-          return 'Draw!';
-        } else if (playerSelection === 'ROCK' && computerSelection === 'SCISSORS') {
-          playerScore += 1; // Add to score
-          return 'Player wins the round!';
-        } else if (playerSelection === 'PAPER' && computerSelection === 'ROCK') {
-          playerScore += 1;
-          return 'Player wins the round!';
-        } else if (playerSelection === 'SCISSORS' && computerSelection === 'PAPER') {
-          playerScore += 1;
-          return 'Player wins the round!';
-        } else {
-          computerScore += 1;
-          return 'Computer wins the round!';
-        }
-      }
-    }
-
-    function playerSelectionFunc() { // Gets player input
-      playerSelection = prompt('Pick from Rock, Paper or Scissors', '').toUpperCase();
-      if (playerSelection === 'ROCK' || playerSelection === 'PAPER' || playerSelection === 'SCISSORS') { // Checks for expected  reponse and returns it if correct
-        return playerSelection;
+      while (playerScore < 5 && computerScore < 5) {
+      if (playerSelection === computerSelection) {
+        resultsText.textContent = 'Draw!';
+        resultsDiv.appendChild(resultsText);
+        return;
+      } else if (playerSelection === 'ROCK' && computerSelection === 'SCISSORS') {
+        playerScore++; // Add to score
+        playScore.textContent = (`Player Score: ${playerScore}`);
+        if (playerScore === 5) break;
+        resultsText.textContent = 'Player wins the round!';
+        resultsDiv.appendChild(resultsText);
+        return;
+      } else if (playerSelection === 'PAPER' && computerSelection === 'ROCK') {
+        playerScore++;
+        playScore.textContent = (`Player Score: ${playerScore}`);
+        if (playerScore === 5) break;
+        resultsText.textContent = 'Player wins the round!';
+        resultsDiv.appendChild(resultsText);
+        return;
+      } else if (playerSelection === 'SCISSORS' && computerSelection === 'PAPER') {
+        playerScore++;
+        playScore.textContent = (`Player Score: ${playerScore}`);
+        if (playerScore === 5) break;
+        resultsText.textContent = 'Player wins the round!';
+        resultsDiv.appendChild(resultsText);
+        return;
       } else {
-        while ((playerSelection !== 'ROCK' && playerSelection !== 'PAPER' && playerSelection !== 'SCISSORS')) { // Validates response as expected and reprompts if required
-          alert('Error, please only enter: Rock, Paper or Scissors!');
-          playerSelection = prompt('Pick from Rock, Paper or Scissors', '').toUpperCase();
-        }
-      } return playerSelection;
-    }
-
-    function game() { // Sets a set of five round in motion
-      for (i = 0; i < 5; i++) {
-        playerSelectionFunc();
-        console.log(playRound(playerSelection, computerSelection));
-        console.log('Player Score is: ' + playerScore);
-        console.log('Computer Score is: ' + computerScore);
+        computerScore++;
+        compScore.textContent = (`Computer Score: ${computerScore}`);
+        if (computerScore === 5) break;
+        resultsText.textContent = 'Computer wins the round!';
+        resultsDiv.appendChild(resultsText);
+        return;
       }
-      if (playerScore === computerScore) { // Checks for winner and returns
-        return console.log('Gameis a Draw');
-      } else if (playerScore > computerScore) {
-        return console.log('Player Wins The Game!');
-      } else {
-        return console.log('Computer Wins The Game!');
-      }
-    }
+    } if (playerScore < computerScore) {
+      resultsText.textContent = `Bad luck! \n Computer wins the game!`;
+    } else resultsText.textContent = `Well done! You win!`;
+  }
   </script>
 </body>
 </html>
