@@ -97,8 +97,11 @@
         return;
       }
     } if (playerScore < computerScore) {
-      resultsText.textContent = `Bad luck! \n Computer wins the game!`;
+      resultsText.textContent = `Bad luck! Computer wins the game!`;
+      resultsDiv.style.cssText = 'font-size: 30px; font-weight: bold;';
+
     } else resultsText.textContent = `Well done! You win!`;
+      resultsDiv.style.cssText = 'font-size: 30px; font-weight: bold;';
   }
   </script>
 </body>
